@@ -1,0 +1,53 @@
+version: '3' # ระบุเวอร์ชันของ Docker Compose
+
+services:
+
+  video-streaming1:
+    image: video-streaming1
+    build: 
+      context: ./video-streaming1
+      dockerfile: Dockerfile
+    container_name: video-streaming1
+    ports:
+      - "3001:80"
+    environment:
+      - PORT=80
+    restart: "no"
+
+  video-streaming2:
+    image: video-streaming2
+    build: 
+      context: ./video-streaming2
+      dockerfile: Dockerfile
+    container_name: video-streaming2
+    ports:
+      - "3002:80"
+    environment:
+      - PORT=80
+    restart: "no"
+
+  video-streaming3:
+    image: video-streaming3
+    build: 
+      context: ./video-streaming3
+      dockerfile: Dockerfile
+    container_name: video-streaming3
+    ports:
+      - "3003:80"
+    environment:
+      - PORT=80
+    restart: "no"
+
+  node-cluster:
+    build:
+      context: ./node-cluster
+      dockerfile: Dockerfile
+    container_name: node-cluster
+    environment:
+      - APP_NAME=NodeCluster
+      - STREAMING_URL1=http://video-streaming1:80
+      - STREAMING_URL2=http://video-streaming2:80
+      - STREAMING_URL3=http://video-streaming3:80
+    ports:
+      - "4001:3000"
+    restart: "no"
